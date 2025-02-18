@@ -75,6 +75,15 @@ class ProfileController extends Controller
      */
     public function destroy(string $id)
     {
-        // elimina la account
+        $user = User::find($id);
+        // Eliminar la imagen, si existe
+        if ($user->image && Storage::disk('public')->exists('img/'. $user->image)) {
+            Storage::disk('public')->delete('img/'. $user->image);
+        }
+
+        // Eliminar el usuario de la base de datos
+        $user->delete();
+
+        return redirect()->route('home')->with('message', 'Cuenta eliminada correctamente');
     }
 }

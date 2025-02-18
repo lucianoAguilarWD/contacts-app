@@ -35,6 +35,13 @@
                         <p class="text-gray-700 text-xl font-semibold">url:</p>
                         <p class="text-lg font-medium text-gray-900">{{ $user->url ?? 'No especificado' }}</p>
                     </div>
+                    <form action="/profile/{{$user->id}}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                            Borrar Cuenta
+                        </button>
+                    </form>
                 </div>
 
             </div>

@@ -22,7 +22,7 @@ Route::middleware("auth")->group(function () {
 
     Route::put('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::delete("/profile", [ProfileController::class, "destroy"])->name(
+    Route::delete("/profile/{id}", [ProfileController::class, "destroy"])->name(
         "profile.destroy"
     );
 });
