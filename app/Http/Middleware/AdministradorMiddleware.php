@@ -6,8 +6,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
-class AuthenticateMiddleware
+class AdministradorMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,10 +17,9 @@ class AuthenticateMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+        if (Auth::user() && Auth::user()->role == User::ROLE_ADMIN) {
+            return $next($request);
         }
-
-        return $next($request);
+        return redirect("/");
     }
 }
