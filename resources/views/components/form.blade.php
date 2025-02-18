@@ -5,7 +5,7 @@
     <p class="text-green-500 text-center mb-4">{{ session('success') }}</p>
     @endif
 
-    <form action="{{ $url }}" method="POST" class="space-y-4">
+    <form action="{{ $url }}" method="POST" class="space-y-4" {{ $atributos }}>
         @csrf
         {{ $campos }}
         <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg">{{$submit}}</button>
