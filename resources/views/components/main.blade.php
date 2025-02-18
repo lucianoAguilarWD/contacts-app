@@ -1,0 +1,1 @@
+<main class="flex items-center justify-center h-screen bg-gray-100"> {{ $slot }} </main>
