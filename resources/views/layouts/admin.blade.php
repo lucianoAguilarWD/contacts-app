@@ -14,11 +14,6 @@
             <!-- Logo -->
             <a href="/" class="text-xl font-bold text-gray-800">Contacts-App</a>
 
-            <!-- Menú de navegación -->
-            <nav class="hidden md:flex space-x-6">
-                <a href="/profile/show/{{auth()->id()}}" class="text-gray-600 hover:text-blue-500">Perfil</a>
-            </nav>
-
             <form action="{{route('cerrar_sesion')}}" method="POST">
                 @csrf
                 <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
