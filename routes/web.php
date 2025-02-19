@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +45,12 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('cerrar_sesion'
 
 Route::middleware(AdministradorMiddleware::class)->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+    // gestión de usuarios
     Route::get('/admin/registrar', [AdminController::class, 'createUser'])->name('admin.registrar');
-
     Route::post('/admin/registrar', [AdminController::class, 'storeUser'])->name('admin.registrar.store');
+    //gestión de categorias
+    Route::get('/admin/mostrar/{id}', [CategoryController::class, 'show'])->name('admin.mostrar');
+    Route::post('/admin/agregar', [CategoryController::class, 'store'])->name('admin.agregar');
+    Route::put('/admin/editar/{id}', [CategoryController::class, 'update'])->name('admin.editar');
+    Route::delete('/admin/eliminar/{id}', [CategoryController::class, 'destroy'])->name('admin.eliminar');
 });
