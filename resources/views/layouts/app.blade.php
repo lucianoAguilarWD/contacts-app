@@ -28,7 +28,7 @@
         </div>
     </header>
     @yield('content')
-    <footer></footer>
+    <x-footer></x-footer>
 </body>
 
 </html>

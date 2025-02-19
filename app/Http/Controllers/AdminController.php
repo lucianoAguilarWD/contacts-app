@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -15,8 +17,15 @@ class AdminController extends Controller
     public function index()
     {
         Paginator::useTailwind();
-        $users = User::orderBy('id', 'desc')->paginate(6);
-        return view('admin.index', compact('users'));
+        $user = Auth::user();
+        $users = User::whereNot('id', $user->id)
+                 ->orderBy('id', 'desc')
+                 ->paginate(6);
+
+        //categorias         
+        $categories = Category::all();
+
+        return view('admin.index', compact('users', 'categories'));
     }
 
     /**
@@ -51,37 +60,5 @@ class AdminController extends Controller
         //Guarda el usuario en la base de datos
         $user->save();
         return redirect()->route('admin')->with('message', 'Usuario creado correctamente');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
