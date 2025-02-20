@@ -51,7 +51,7 @@
                             {{ $user->url }}
                         </a>
                         @else
-                        <p class="text-lg font-medium text-gray-900"> Edite su perfil para agregarlo</p>
+                        <p class="font-semibold text-gray-900"> Edite su perfil para agregarlo</p>
                         @endif
                     </div>
                 </div>

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('url')->nullable();
             $table->string('phone')->nullable();
+            $table->softDeletes();
         });
     }
 

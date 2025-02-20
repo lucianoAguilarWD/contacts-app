@@ -48,6 +48,7 @@ Route::middleware(AdministradorMiddleware::class)->group(function () {
     // gestión de usuarios
     Route::get('/admin/registrar', [AdminController::class, 'createUser'])->name('admin.registrar');
     Route::post('/admin/registrar', [AdminController::class, 'storeUser'])->name('admin.registrar.store');
+    Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit)');
     //gestión de categorias
     Route::post('/admin/agregar', [CategoryController::class, 'store'])->name('admin.agregar');
     Route::put('/admin/editar/{id}', [CategoryController::class, 'update'])->name('admin.editar');

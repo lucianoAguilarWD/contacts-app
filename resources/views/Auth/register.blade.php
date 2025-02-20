@@ -24,6 +24,12 @@
             </div>
         </x-slot>
         <x-slot name="submit"> Registrarse </x-slot>
+        <x-slot name="agregados">
+            <a href="{{ route('inicia_sesion') }}"
+                class="text-blue-600 hover:text-blue-800 underline font-medium">
+                Loguearse
+            </a>
+        </x-slot>
     </x-form>
 </x-main>
 @endsection

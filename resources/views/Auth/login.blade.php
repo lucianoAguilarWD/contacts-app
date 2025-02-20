@@ -19,7 +19,14 @@
                 @error('password') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
             </div>
         </x-slot>
-        <x-slot name="submit"> Iniciar Sesión</x-slot>
+        <x-slot name="submit"> Iniciar Sesión </x-slot>
+        <x-slot name="agregados">
+            <a href="{{ route('register') }}"
+                class="text-blue-600 hover:text-blue-800 underline font-medium">
+                Registrarse
+            </a>
+        </x-slot>
+
     </x-form>
 </x-main>
 @endsection

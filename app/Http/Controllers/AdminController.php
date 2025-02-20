@@ -61,4 +61,10 @@ class AdminController extends Controller
         $user->save();
         return redirect()->route('admin')->with('message', 'Usuario creado correctamente');
     }
+
+    public function edit(string $id)
+    {
+        $user = User::findOrFail($id);
+        return view('Profile.edit', compact('user'));
+    }
 }
