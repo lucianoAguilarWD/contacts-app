@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
@@ -14,9 +15,7 @@ use App\Http\Middleware\AdministradorMiddleware;
 // });
 
 Route::middleware("auth")->group(function () {
-    Route::get('/', function () {
-        return view('home');
-    })->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
     Route::get('/profile/show/{id}', [ProfileController::class, "show"])->name('profile.show');
 

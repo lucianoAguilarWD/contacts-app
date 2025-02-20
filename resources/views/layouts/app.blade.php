@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 
-<body>
+<body class="bg-gray-100">
     <header class="bg-white shadow-md">
         <div class="container mx-auto flex justify-between items-center p-4">
             <!-- Logo -->
@@ -38,6 +38,11 @@
                         <a href="{{ route('profile.show', auth()->id()) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
                             Perfil
                         </a>
+                        @if(auth()->user()->role == 0)
+                            <a href="{{route('admin')}}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                                Panel Administrativo
+                            </a>
+                        @endif
                         <form action="{{ route('cerrar_sesion') }}" method="POST">
                             @csrf
                             <button type="submit" class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
@@ -48,7 +53,7 @@
                 </div>
             </div>
     </header>
-    @yield('content')
+    @yield('content')    
     <x-footer></x-footer>
 </body>
 
