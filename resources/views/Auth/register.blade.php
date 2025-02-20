@@ -9,12 +9,12 @@
         <x-slot name="campos">
             <div>
                 <label class="block text-gray-700">Nombre</label>
-                <input type="text" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                <input type="text" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" value="{{ old('name') }}" required>
                 @error('name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label class="block text-gray-700">Correo Electrónico</label>
-                <input type="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                <input type="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" value="{{ old('email') }}" required>
                 @error('email') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
             </div>
             <div>

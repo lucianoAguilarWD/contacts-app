@@ -54,6 +54,7 @@ class AdminController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        $user->image = 'perfil.png';
         $user->role = (int) $request->role;
 
 
