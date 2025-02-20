@@ -49,6 +49,7 @@ class LoginController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->image = 'perfil.png';
         $user->password = Hash::make($request->password);
 
         //Guarda el usuario en la base de datos

@@ -37,7 +37,7 @@ class ProfileController extends Controller
             "name" => ['required', 'string', 'max:255'],
             "image" => ['image'],
             "url" => ['nullable', 'url'],
-            "phone" => ['string', 'max:11', 'regex:/^[0-9]+$/'],
+            "phone" => ['nullable', 'string', 'max:11', 'regex:/^[0-9]+$/'],
         ]);
 
         $user = User::find($id);
@@ -51,7 +51,9 @@ class ProfileController extends Controller
         if ($request->hasFile('image')) {
             // Eliminar la imagen antigua, si existe
             if ($user->image && Storage::disk('public')->exists('img/' . $user->image)) {
-                Storage::disk('public')->delete('img/' . $user->image);
+                if($user->image !== 'perfil.png'){
+                    Storage::disk('public')->delete('img/' . $user->image);
+                } 
             }
 
             // Subir la nueva imagen

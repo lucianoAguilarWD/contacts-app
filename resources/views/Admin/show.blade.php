@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Registrar Usuario')
+@section('title', 'Subcategorías')
 
 @section('content')
 
@@ -13,23 +13,34 @@
                 <h1 class="text-3xl font-semibold text-white text-center">
                     Subcategorías de {{$category->name}}
                 </h1>
+                <x-a>
+                    <x-slot name="ref">{{Route('admin')}}</x-slot>
+                    <x-slot name="color">bg-gray-500 hover:bg-gray-600</x-slot>
+                    <x-slot name="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                        </svg>
+
+                    </x-slot>
+                </x-a>
             </div>
 
             <!-- Contenedor de categorías -->
             <div class="p-6 bg-gray-100">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($category->subcategories as $category)
+                    @foreach($category->subcategories as $subcategory)
                     <div class="bg-white border-l-4 border-black shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
 
 
                         <!-- editar categorias -->
+
                         <div class="md:col-span-2 space-y-4">
-                            <form action="/admin/editar/{{$category->id}}" method="POST">
+                            <form action="{{ route('admin.subcategorias.editar', $subcategory->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <div>
                                     <label class="block text-gray-700">Nombre</label>
-                                    <input type="text" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" value="{{ old('name', $category->name) }}">
+                                    <input type="text" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" value="{{ old('name', $subcategory->name) }}">
                                     @error('name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                                 </div>
                                 <x-button>
@@ -46,7 +57,7 @@
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <form action="/admin/eliminar/{{$category->id}}" method="POST">
+                            <form action="{{ route('admin.subcategorias.eliminar', $subcategory->id) }}" method="POST">
                                 @csrf
                                 @method('delete')
                                 <x-button>
@@ -63,7 +74,7 @@
                     </div>
                     @endforeach
                 </div>
-                <form action="{{Route('admin.agregar')}}" method="POST">
+                <form action="/admin/subcategorias/{{$subcategory->category_id}}" method="POST">
                     @csrf
                     <div>
                         <label class="block text-gray-700">Nombre</label>
