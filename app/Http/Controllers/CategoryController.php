@@ -12,17 +12,17 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(string $id)
     {
         $categories = Category::all();
-        return view('Categories.index', compact('categories'));
+        $user = $id;
+        return view('Categories.index', compact('categories', 'user'));
     }
 
-    public function userSelectedCategories(Request $request)
+    public function userSelectedCategories(Request $request, string $id)
     {
     
-        $user = Auth::user();
-        $user_id = $user->id;
+        $user_id = $id;
         $selected_categories = $request->categories;
 
         // Elimina las categorías anteriores del usuario
@@ -36,7 +36,7 @@ class CategoryController extends Controller
             ]);
         }
 
-        return redirect()->route('subcategories')->with('message', 'Categorías seleccionadas actualizadas exitosamente');
+        return redirect()->route('subcategories', $user_id)->with('message', 'Categorías seleccionadas actualizadas exitosamente');
     }
 
     /**

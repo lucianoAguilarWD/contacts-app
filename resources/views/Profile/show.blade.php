@@ -68,10 +68,11 @@
                         @endif
                         @endforeach
                         @endforeach
+                        @if(auth()->user()->id == $user->id)
                         <div class="flex items-center justify-end mt-4">
 
                             <x-a>
-                                <x-slot name="ref">{{Route('categories')}}</x-slot>
+                                <x-slot name="ref">{{Route('categories', auth()->user()->id)}}</x-slot>
                                 <x-slot name="color">bg-gray-500 hover:bg-gray-600</x-slot>
                                 <x-slot name="icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -80,12 +81,13 @@
                                 </x-slot>
                             </x-a>
                         </div>
-
+                        @endif
                     </div>
 
 
                 </div>
             </div>
+            @if(auth()->user()->id == $user->id)
             <x-a>
                 <x-slot name="ref">{{Route('profile.edit')}}</x-slot>
                 <x-slot name="color">bg-gray-500 hover:bg-gray-600</x-slot>
@@ -95,6 +97,7 @@
                     </svg>
                 </x-slot>
             </x-a>
+            @endif
         </div>
 
     </div>

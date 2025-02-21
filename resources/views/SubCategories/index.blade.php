@@ -6,7 +6,7 @@
 <x-main>
     <x-form>
         <x-slot name="title">Subcategorías</x-slot>
-        <x-slot name="url">/subcategories</x-slot>
+        <x-slot name="url">/subcategories/{{$user_id}}</x-slot>
         <x-slot name="style">bg-white p-8 rounded-lg shadow-md w-100</x-slot>
         <x-slot name="campos">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

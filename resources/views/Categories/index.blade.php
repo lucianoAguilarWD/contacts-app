@@ -5,8 +5,9 @@
 @section('content')
 <x-main>
     <x-form>
+        <?php echo($user); ?>
         <x-slot name="title">Categorías</x-slot>
-        <x-slot name="url">/categories </x-slot>
+        <x-slot name="url">/categories/{{$user}} </x-slot>
         <x-slot name="style">bg-white p-8 rounded-lg shadow-md</x-slot>
         <x-slot name="campos">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

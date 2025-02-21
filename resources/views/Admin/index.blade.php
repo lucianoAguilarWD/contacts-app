@@ -96,6 +96,14 @@
                                     </svg>
                                 </x-slot>
                             </x-a>
+                            <?php echo($user->id);?>
+                            <x-a>
+                                <x-slot name="ref">{{Route('admin.categories', $user->id)}}</x-slot>
+                                <x-slot name="color">bg-gray-500 hover:bg-gray-600</x-slot>
+                                <x-slot name="icon">
+                                    Categorías
+                                </x-slot>
+                            </x-a>
                         </div>
                     </div>
                     @endforeach

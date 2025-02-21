@@ -26,10 +26,10 @@ Route::middleware("auth")->group(function () {
         "profile.destroy"
     );
     // rutas de categorias
-    Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
-    Route::post('/categories', [CategoryController::class, 'userSelectedCategories'])->name('categories.select');
-    Route::get('/subcategories', [SubCategoryController::class, 'index'])->name('subcategories');
-    Route::post('/subcategories', [SubCategoryController::class, 'userSelectedSubCategories'])->name('subcategories.select');
+    Route::get('/categories/{id}', [CategoryController::class, 'index'])->name('categories');
+    Route::post('/categories/{id}', [CategoryController::class, 'userSelectedCategories'])->name('categories.select');
+    Route::get('/subcategories/{id}', [SubCategoryController::class, 'index'])->name('subcategories');
+    Route::post('/subcategories/{id}', [SubCategoryController::class, 'userSelectedSubCategories'])->name('subcategories.select');
 });
 
 // ----------------------------------------------------------------
@@ -50,6 +50,7 @@ Route::middleware(AdministradorMiddleware::class)->group(function () {
     Route::get('/admin/registrar', [AdminController::class, 'createUser'])->name('admin.registrar');
     Route::post('/admin/registrar', [AdminController::class, 'storeUser'])->name('admin.registrar.store');
     Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit)');
+    Route::get('/admin/categories/{id}', [CategoryController::class, 'index'])->name('admin.categories');
     //gestión de categorias
     Route::post('/admin/agregar', [CategoryController::class, 'store'])->name('admin.agregar');
     Route::put('/admin/editar/{id}', [CategoryController::class, 'update'])->name('admin.editar');

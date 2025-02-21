@@ -7,29 +7,32 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class SubCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(string $id)
     {
-        $user = Auth::user();
+        $user = User::findOrFail($id);
+        $user_id = $user->id;
 
         // Obtener las categorías asociadas al usuario
-        $categoryIds = $user->categories()->pluck('categories.id');
+        $categories = $user->categories;
+        $categoryIds = $categories->pluck('category_id');
 
         // Filtrar las subcategorías que pertenecen a esas categorías
         $subcategories = SubCategory::whereIn('category_id', $categoryIds)->get();
         $categories = $user->categories;
-        return view('SubCategories.index', compact('subcategories', 'categories'));
+        return view('SubCategories.index', compact('subcategories', 'categories', 'user_id'));
     }
 
-    public function userSelectedSubCategories(Request $request)
+    public function userSelectedSubCategories(Request $request, string $id)
     {
     
-        $user = Auth::user();
+        $user = User::findOrFail($id);
         $user_id = $user->id;
         $selected_subcategories = $request->subcategories;
 
