@@ -43,7 +43,9 @@ class SubCategoryController extends Controller
         foreach ($selected_subcategories as $sub_category_id) {
             DB::table('user_sub_categories')->insert([
                 'user_id' => $user_id,
-                'sub_category_id' => $sub_category_id
+                'sub_category_id' => $sub_category_id,
+                'created_at' => now(),
+                'updated_at' => now() 
             ]);
         }
 
@@ -100,7 +102,14 @@ class SubCategoryController extends Controller
      */
     public function destroy(string $id)
     {
+        $users = User::all();
         $subcategory = SubCategory::find($id);
+        foreach ($users as $user) {
+            
+            if ($user->subcategories->contains('id', $subcategory->id)) {
+                return redirect()->route('admin.mostrar', $subcategory->category_id)->with('message', 'La subcategoría está siendo utilizada');
+            }
+        }
         $subcategory->delete();
 
         return redirect()->route('admin.mostrar', $subcategory->category_id)->with('message', 'Subcategoría eliminada exitosamente');

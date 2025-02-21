@@ -6,7 +6,20 @@
 
 <div class="py-6 mt-16">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        @if (session('message'))
+        <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
+            <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Atención</span>
+            <div>
+                <span class="font-medium">{{ session('message') }}</span>
+            </div>
+        </div>
+
+        @endif
         <div class="bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mb-6">
+
             <!-- Encabezado -->
             <div class="bg-gray-800 p-4">
                 <h1 class="text-3xl font-semibold text-white text-center">
@@ -96,7 +109,6 @@
                                     </svg>
                                 </x-slot>
                             </x-a>
-                            <?php echo($user->id);?>
                             <x-a>
                                 <x-slot name="ref">{{Route('admin.categories', $user->id)}}</x-slot>
                                 <x-slot name="color">bg-gray-500 hover:bg-gray-600</x-slot>
@@ -195,6 +207,7 @@
                         </div>
                     </div>
                     @endforeach
+
                 </div>
 
                 <form action="{{Route('admin.agregar')}}" method="POST">
@@ -213,12 +226,11 @@
                         </x-slot>
                     </x-button>
                 </form>
-
-
             </div>
 
         </div>
     </div>
 </div>
+
 
 @endsection

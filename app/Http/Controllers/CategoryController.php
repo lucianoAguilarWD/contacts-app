@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+
 class CategoryController extends Controller
 {
 
@@ -21,7 +22,7 @@ class CategoryController extends Controller
 
     public function userSelectedCategories(Request $request, string $id)
     {
-    
+
         $user_id = $id;
         $selected_categories = $request->categories;
 
@@ -32,7 +33,9 @@ class CategoryController extends Controller
         foreach ($selected_categories as $category_id) {
             DB::table('category_user')->insert([
                 'user_id' => $user_id,
-                'category_id' => $category_id
+                'category_id' => $category_id,
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
         }
 
@@ -76,10 +79,17 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        // Busca la categoría por su ID y la elimina
+        $users = User::all();
         $category = Category::find($id);
-        $category->delete();
 
+        foreach ($users as $user) {
+            
+            if ($user->categories->contains('id', $category->id)) {
+                return redirect()->route('admin')->with('message', 'La categoría está siendo utilizada');
+            }
+        }
+
+        $category->delete();
         return redirect()->route('admin')->with('message', 'Categoría eliminada exitosamente');
     }
 }
