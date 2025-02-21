@@ -12,7 +12,6 @@
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Categorías (Checkbox) -->
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">Categorías</label>
                     @foreach ($categories as $category)
                     <div class="flex items-center mb-2">
                         <input id="category-{{ $category->id }}" type="checkbox" name="categories[]" value="{{ $category->id }}"
@@ -22,7 +21,6 @@
                     @endforeach
                 </div>
             </div>
-
         </x-slot>
         <x-slot name="submit">Seleccionar</x-slot>
     </x-form>

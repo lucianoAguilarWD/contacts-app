@@ -11,7 +11,7 @@ use App\Http\Middleware\AdministradorMiddleware;
 
 
 // Route::middleware(AuthenticateMiddleware::class)->group(function () {
-    
+
 // });
 
 Route::middleware("auth")->group(function () {
@@ -29,6 +29,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::post('/categories', [CategoryController::class, 'userSelectedCategories'])->name('categories.select');
     Route::get('/subcategories', [SubCategoryController::class, 'index'])->name('subcategories');
+    Route::post('/subcategories', [SubCategoryController::class, 'userSelectedSubCategories'])->name('subcategories.select');
 });
 
 // ----------------------------------------------------------------
@@ -36,11 +37,10 @@ Route::middleware("auth")->group(function () {
 Route::middleware('guest')->group(function () {
     Route::view('/login', 'Auth.Login')->name('login');
     Route::view('/registro', 'Auth.Register')->name('register');
-
-    Route::post('/register', [LoginController::class, 'register'])->name('validar_registro');
-    Route::post('/login', [LoginController::class, 'login'])->name('inicia_sesion');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('cerrar_sesion');
 });
+Route::post('/register', [LoginController::class, 'register'])->name('validar_registro');
+Route::post('/login', [LoginController::class, 'login'])->name('inicia_sesion');
+Route::post('/logout', [LoginController::class, 'logout'])->name('cerrar_sesion');
 
 // ----------------------------------------------------------------
 
@@ -56,7 +56,7 @@ Route::middleware(AdministradorMiddleware::class)->group(function () {
     Route::delete('/admin/eliminar/{id}', [CategoryController::class, 'destroy'])->name('admin.eliminar');
     // gestión de subcategorias
     Route::get('/admin/mostrar/{id}', [SubCategoryController::class, 'show'])->name('admin.mostrar');
-    Route::post('/admin/subcategorias/{id}', [SubCategoryController::class,'store'])->name('admin.subcategorias.store');
+    Route::post('/admin/subcategorias/{id}', [SubCategoryController::class, 'store'])->name('admin.subcategorias.store');
     Route::put('/admin/subcategorias/editar/{id}', [SubCategoryController::class, 'update'])->name('admin.subcategorias.editar');
     Route::delete('/admin/subcategorias/eliminar/{id}', [SubCategoryController::class, 'destroy'])->name('admin.subcategorias.eliminar');
 });

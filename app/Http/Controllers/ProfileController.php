@@ -16,9 +16,11 @@ class ProfileController extends Controller
     public function show(string $id)
     {
         $user = User::findOrFail($id);
-        $categories = $user->categories; 
+        $categories = $user->categories;
+        $subcategories = $user->subcategories;
+        $selectedSubcategoryIds = $subcategories->pluck('id')->toArray();
 
-        return view('Profile.show', compact('user', 'categories'));
+        return view('Profile.show', compact('user', 'categories', 'selectedSubcategoryIds'));
     }
 
 

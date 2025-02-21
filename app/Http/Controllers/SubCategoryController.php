@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SubCategoryController extends Controller
 {
@@ -21,9 +22,31 @@ class SubCategoryController extends Controller
 
         // Filtrar las subcategorías que pertenecen a esas categorías
         $subcategories = SubCategory::whereIn('category_id', $categoryIds)->get();
-
-        return view('SubCategories.index', compact('subcategories'));
+        $categories = $user->categories;
+        return view('SubCategories.index', compact('subcategories', 'categories'));
     }
+
+    public function userSelectedSubCategories(Request $request)
+    {
+    
+        $user = Auth::user();
+        $user_id = $user->id;
+        $selected_subcategories = $request->subcategories;
+
+        // Elimina las categorías anteriores del usuario
+        DB::table('user_sub_categories')->where('user_id', $user_id)->delete();
+
+        // Inserta las nuevas categorías
+        foreach ($selected_subcategories as $sub_category_id) {
+            DB::table('user_sub_categories')->insert([
+                'user_id' => $user_id,
+                'sub_category_id' => $sub_category_id
+            ]);
+        }
+
+        return redirect()->route('profile.show', $user_id)->with('message', 'Categorías seleccionadas actualizadas exitosamente');
+    }
+
     /**
      * Display a listing of the resource.
      */

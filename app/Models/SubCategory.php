@@ -12,4 +12,9 @@ class SubCategory extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function User()
+    {
+        return $this->belongsToMany(User::class, 'user_sub_categories');
+    }
 }
