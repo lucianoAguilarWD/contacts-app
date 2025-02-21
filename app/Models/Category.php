@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     protected $fillable = ['name'];
-    public function User(){
+    public function User()
+    {
         return $this->belongsToMany(User::class, 'category_user');
     }
 

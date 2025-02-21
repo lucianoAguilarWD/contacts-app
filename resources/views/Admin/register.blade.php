@@ -32,7 +32,7 @@
                 </select>
             </div>
         </x-slot>
-        <x-slot name="submit"> Registrarse </x-slot>
+        <x-slot name="submit"> Registrar </x-slot>
     </x-form>
 </x-main>
 

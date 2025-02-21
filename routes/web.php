@@ -15,19 +15,20 @@ use App\Http\Middleware\AdministradorMiddleware;
 // });
 
 Route::middleware("auth")->group(function () {
+    // rutas de perfil
     Route::get('/', [HomeController::class, 'index'])->name('home');
-
     Route::get('/profile/show/{id}', [ProfileController::class, "show"])->name('profile.show');
-
     Route::get("/profile", [ProfileController::class, "edit"])->name(
         "profile.edit"
     );
-
     Route::put('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
-
     Route::delete("/profile/{id}", [ProfileController::class, "destroy"])->name(
         "profile.destroy"
     );
+    // rutas de categorias
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+    Route::post('/categories', [CategoryController::class, 'userSelectedCategories'])->name('categories.select');
+    Route::get('/subcategories', [SubCategoryController::class, 'index'])->name('subcategories');
 });
 
 // ----------------------------------------------------------------
@@ -35,11 +36,11 @@ Route::middleware("auth")->group(function () {
 Route::middleware('guest')->group(function () {
     Route::view('/login', 'Auth.Login')->name('login');
     Route::view('/registro', 'Auth.Register')->name('register');
-});
 
-Route::post('/register', [LoginController::class, 'register'])->name('validar_registro');
-Route::post('/login', [LoginController::class, 'login'])->name('inicia_sesion');
-Route::post('/logout', [LoginController::class, 'logout'])->name('cerrar_sesion');
+    Route::post('/register', [LoginController::class, 'register'])->name('validar_registro');
+    Route::post('/login', [LoginController::class, 'login'])->name('inicia_sesion');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('cerrar_sesion');
+});
 
 // ----------------------------------------------------------------
 

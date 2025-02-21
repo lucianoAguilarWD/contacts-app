@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -19,8 +20,8 @@ class AdminController extends Controller
         Paginator::useTailwind();
         $user = Auth::user();
         $users = User::whereNot('id', $user->id)
-                 ->orderBy('id', 'desc')
-                 ->paginate(6);
+            ->orderBy('id', 'desc')
+            ->paginate(6);
 
         //categorias         
         $categories = Category::all();
@@ -44,22 +45,40 @@ class AdminController extends Controller
         //Validación de datos
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->whereNull('deleted_at'),
+            ],
             'password' => ['required', 'min:6'],
         ]);
 
-        //Crea un nuevo usuario y le asigna los valores del request
-        $user = new User();
+        $user = User::withTrashed()->where('email', $request->email)->first();
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->image = 'perfil.png';
-        $user->role = (int) $request->role;
+        if ($user && $user->trashed()) {
+            $user->restore();
+            // Actualiza los campos si es necesario
+            $user->name = $request->name;
+            $user->password = Hash::make($request->password);
+            $user->role = (int) $request->role;
+            $user->phone = NULL;
+            $user->url = NULL;
+            $user->save();
+        } elseif ($user) {
+            // Si existe y no está eliminado, lanzar error o manejarlo según la lógica de negocio
+            return redirect()->back()->withErrors(['email' => 'El email ya está en uso.']);
+        } else {
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->role = (int) $request->role;
+            $user->image = 'perfil.png';
+            $user->save();
+        }
 
-
-        //Guarda el usuario en la base de datos
-        $user->save();
         return redirect()->route('admin')->with('message', 'Usuario creado correctamente');
     }
 

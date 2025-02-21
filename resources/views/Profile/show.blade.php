@@ -9,7 +9,6 @@
 
         <div class="bg-white border-l-4 border-black shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
 
-
             {{-- Imagen de perfil --}}
             @if($user->image)
             <div class="flex flex-col items-center">
@@ -54,6 +53,16 @@
                         <p class="font-semibold text-gray-900"> Edite su perfil para agregarlo</p>
                         @endif
                     </div>
+
+                    <div class="bg-blancoSuave p-4 rounded-lg border border-gray-300">
+                        <p class="text-gray-600 text-lg">Categorías:</p>
+                        @foreach($categories as $category)
+                        <p class="font-semibold text-gray-900">
+                            {{ $category->name ?? 'Edite su perfil para agregarlo'}}
+                        </p>
+                        @endforeach
+                    </div>
+
                 </div>
             </div>
             <x-a>

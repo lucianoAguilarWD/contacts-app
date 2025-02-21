@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\Rule;
 
 class LoginController extends Controller
 {
@@ -40,21 +40,38 @@ class LoginController extends Controller
         //Validación de datos
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->whereNull('deleted_at'),
+            ],
             'password' => ['required', 'min:6'],
         ]);
 
-        //Crea un nuevo usuario y le asigna los valores del request
-        $user = new User();
+        $user = User::withTrashed()->where('email', $request->email)->first();
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->image = 'perfil.png';
-        $user->password = Hash::make($request->password);
-
-        //Guarda el usuario en la base de datos
-        $user->save();
-
+        if ($user && $user->trashed()) {
+            $user->restore();
+            // Actualiza los campos si es necesario
+            $user->name = $request->name;
+            $user->password = Hash::make($request->password);
+            $user->phone = NULL;
+            $user->url = NULL;
+            $user->save();
+        } elseif ($user) {
+            // Si existe y no está eliminado, lanzar error o manejarlo según la lógica de negocio
+            return redirect()->back()->withErrors(['email' => 'El email ya está en uso.']);
+        } else {
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->image = 'perfil.png';
+            $user->save();
+        }
+    
         //Autentica al usuario y redirecciona a la página principal
         Auth::login($user);
         return redirect()->route('home')->with('message', 'Login exitoso');

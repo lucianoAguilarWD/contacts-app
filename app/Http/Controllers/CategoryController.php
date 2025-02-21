@@ -4,9 +4,40 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 class CategoryController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $categories = Category::all();
+        return view('Categories.index', compact('categories'));
+    }
+
+    public function userSelectedCategories(Request $request)
+    {
+    
+        $user = Auth::user();
+        $user_id = $user->id;
+        $selected_categories = $request->categories;
+
+        // Elimina las categorías anteriores del usuario
+        DB::table('category_user')->where('user_id', $user_id)->delete();
+
+        // Inserta las nuevas categorías
+        foreach ($selected_categories as $category_id) {
+            DB::table('category_user')->insert([
+                'user_id' => $user_id,
+                'category_id' => $category_id
+            ]);
+        }
+
+        return redirect()->route('subcategories')->with('message', 'Categorías seleccionadas actualizadas exitosamente');
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,11 +69,6 @@ class CategoryController extends Controller
         $category->save();
 
         return redirect()->route('admin')->with('message', 'Categoría actualizada exitosamente');
-    }
-
-    public function show(string $id)
-    {
-        
     }
 
     /**

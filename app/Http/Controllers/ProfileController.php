@@ -15,9 +15,12 @@ class ProfileController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find($id);
-        return view('Profile.show', compact('user'));
+        $user = User::findOrFail($id);
+        $categories = $user->categories; 
+
+        return view('Profile.show', compact('user', 'categories'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -45,15 +48,14 @@ class ProfileController extends Controller
         $user->url = $request->url;
         $user->phone = $request->phone;
 
-
-
         // Si se ha subido una nueva imagen
         if ($request->hasFile('image')) {
             // Eliminar la imagen antigua, si existe
             if ($user->image && Storage::disk('public')->exists('img/' . $user->image)) {
-                if($user->image !== 'perfil.png'){
+                //Evitar que se borre la imagen por defecto
+                if ($user->image !== 'perfil.png') {
                     Storage::disk('public')->delete('img/' . $user->image);
-                } 
+                }
             }
 
             // Subir la nueva imagen
@@ -65,9 +67,7 @@ class ProfileController extends Controller
             $user->image = $imageName;
         }
 
-        // Guardar los cambios en la base de datos
         $user->save();
-
 
         return redirect()->route('profile.show', $user->id)->with('message', 'Perfil actualizado correctamente');
     }
@@ -79,8 +79,8 @@ class ProfileController extends Controller
     {
         $user = User::find($id);
         // Eliminar la imagen, si existe
-        if ($user->image && Storage::disk('public')->exists('img/'. $user->image)) {
-            if($user->image !== 'perfil.png'){
+        if ($user->image && Storage::disk('public')->exists('img/' . $user->image)) {
+            if ($user->image !== 'perfil.png') {
                 Storage::disk('public')->delete('img/' . $user->image);
             }
         }
@@ -88,6 +88,6 @@ class ProfileController extends Controller
         // Eliminar el usuario de la base de datos
         $user->delete();
 
-        return redirect()->route('home')->with('message', 'Cuenta eliminada correctamente');
+        return redirect()->route('admin')->with('message', 'Cuenta eliminada correctamente');
     }
 }
