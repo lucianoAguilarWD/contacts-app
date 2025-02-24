@@ -35,8 +35,8 @@ Route::middleware("auth")->group(function () {
 // ----------------------------------------------------------------
 // rutas de login
 Route::middleware('guest')->group(function () {
-    Route::view('/login', 'Auth.Login')->name('login');
-    Route::view('/registro', 'Auth.Register')->name('register');
+    Route::view('/login', 'Auth.login')->name('login');
+    Route::view('/registro', 'Auth.register')->name('register');
 });
 Route::post('/register', [LoginController::class, 'register'])->name('validar_registro');
 Route::post('/login', [LoginController::class, 'login'])->name('inicia_sesion');

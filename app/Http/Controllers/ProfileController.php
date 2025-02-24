@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Archived_User;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -80,14 +81,26 @@ class ProfileController extends Controller
     public function destroy(string $id)
     {
         $user = User::find($id);
-        // Eliminar la imagen, si existe
-        if ($user->image && Storage::disk('public')->exists('img/' . $user->image)) {
-            if ($user->image !== 'perfil.png') {
-                Storage::disk('public')->delete('img/' . $user->image);
-            }
-        }
 
-        // Eliminar el usuario de la base de datos
+        if (!$user) {
+            return redirect()->route('admin')->with('error', 'Usuario no encontrado');
+        }
+    
+        $categoriesNames = $user->categories()->pluck('name')->toArray();
+        $subCategoriesNames = $user->subcategories()->pluck('name')->toArray();
+
+        $archived = new Archived_User();
+        $archived->name = $user->name;
+        $archived->email = $user->email;
+        $archived->image = $user->image;
+        $archived->role = $user->role;
+        $archived->url = $user->url;
+        $archived->phone = $user->phone;
+        $archived->categories = implode('|', $categoriesNames);
+        $archived->subcategories = implode('|', $subCategoriesNames);
+        $archived->save();
+
+        // Eliminar el usuario de manera lógica
         $user->delete();
 
         return redirect()->route('admin')->with('message', 'Cuenta eliminada correctamente');

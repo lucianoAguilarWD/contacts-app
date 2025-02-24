@@ -31,6 +31,9 @@ class SubCategoryController extends Controller
 
     public function userSelectedSubCategories(Request $request, string $id)
     {
+        $request->validate([
+            'subcategories' => 'required|array|min:1',
+        ]); 
     
         $user = User::findOrFail($id);
         $user_id = $user->id;

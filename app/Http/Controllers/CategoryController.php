@@ -22,6 +22,9 @@ class CategoryController extends Controller
 
     public function userSelectedCategories(Request $request, string $id)
     {
+        $request->validate([
+            'categories' => 'required|array|min:1',
+        ]); 
 
         $user_id = $id;
         $selected_categories = $request->categories;

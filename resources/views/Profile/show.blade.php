@@ -33,7 +33,7 @@
                         </p>
                     </div>
                     <div class="bg-blancoSuave p-4 rounded-lg border border-gray-300">
-                        <p class="text-gray-600 text-lg">Telefóno:</p>
+                        <p class="text-gray-600 text-lg">Teléfono:</p>
                         <p class="font-semibold text-gray-900">
                             {{ $user->phone ?? 'Edite su perfil para agregarlo'}}
                         </p>

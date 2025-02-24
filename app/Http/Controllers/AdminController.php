@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -62,10 +63,14 @@ class AdminController extends Controller
             // Actualiza los campos si es necesario
             $user->name = $request->name;
             $user->password = Hash::make($request->password);
-            $user->role = (int) $request->role;
             $user->phone = NULL;
             $user->url = NULL;
+            $user->image = 'perfil.png';
             $user->save();
+            // Elimina las subcategorías anteriores del usuario
+            DB::table('user_sub_categories')->where('user_id', $user->id)->delete();
+            // Elimina las categorías anteriores del usuario
+            DB::table('category_user')->where('user_id', $user->id)->delete();
         } elseif ($user) {
             // Si existe y no está eliminado, lanzar error o manejarlo según la lógica de negocio
             return redirect()->back()->withErrors(['email' => 'El email ya está en uso.']);

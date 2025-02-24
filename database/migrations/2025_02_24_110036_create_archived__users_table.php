@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::create('archived__users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable(false);;
+            $table->string('email');
             $table->unsignedTinyInteger('role')->default(1)->nullable(false);
             $table->string('image')->nullable();
             $table->string('url')->nullable();
             $table->string('phone')->nullable();
-            $table->softDeletes();
+            $table->string('categories')->nullable();
+            $table->string('subcategories')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,11 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
-            $table->dropColumn('image');
-            $table->dropColumn('url');
-            $table->dropColumn('phone');
-        });
+        Schema::dropIfExists('archived__users');
     }
 };
