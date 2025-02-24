@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 
-<body class="bg-gray-100">
+<body>
     <header class="bg-white shadow-md">
         <div class="container mx-auto flex justify-between items-center p-4">
             <!-- Logo -->
@@ -17,7 +17,7 @@
 
             <div x-data="{ open: false }" class="relative inline-block text-left">
                 <!-- Botón para abrir el dropdown -->
-                <button @click="open = !open" type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                <button @click="open = !open" type="button" class="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none" id="menu-button" aria-expanded="true" aria-haspopup="true">
                     <!-- Mostrar imagen de perfil si existe -->
                     @if(auth()->user()->image)
                     <div class="flex items-center">
@@ -38,11 +38,7 @@
                         <a href="{{ route('profile.show', auth()->id()) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
                             Perfil
                         </a>
-                        @if(auth()->user()->role == 0)
-                            <a href="{{route('admin')}}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
-                                Panel Administrativo
-                            </a>
-                        @endif
+                       
                         <form action="{{ route('cerrar_sesion') }}" method="POST">
                             @csrf
                             <button type="submit" class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
@@ -51,9 +47,13 @@
                         </form>
                     </div>
                 </div>
+
             </div>
+
+
+        </div>
     </header>
-    @yield('content')    
+    @yield('content')
     <x-footer></x-footer>
 </body>
 

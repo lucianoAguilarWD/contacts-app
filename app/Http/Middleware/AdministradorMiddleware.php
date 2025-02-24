@@ -20,6 +20,6 @@ class AdministradorMiddleware
         if (Auth::user() && Auth::user()->role == User::ROLE_ADMIN) {
             return $next($request);
         }
-        return redirect("/");
+        return redirect(Route('home'));
     }
 }

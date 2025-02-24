@@ -2,41 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
-
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 
-class LoginController extends Controller
+class AdminController extends Controller
 {
-
-    public function login(Request $request)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        //validación de login        
-        $request->validate([
-            'email' => ['required', 'email', 'exists:users,email'],
-            'password' => ['required'],
-        ]);
+        Paginator::useTailwind();
+        $user = Auth::user();
+        $users = User::whereNot('id', $user->id)
+            ->orderBy('id', 'desc')
+            ->paginate(6);
 
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+        //categorias         
+        $categories = Category::all();
 
-        //Si los datos son correctos
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate(); //prepara la sesión
-            return redirect()->route('home')->with('message', 'Login exitoso'); //redirecciona a la página principal
-        }
-
-        //Si la contraseña no es correcta, regresa al login con un mensaje de error
-        return back()->with('message', 'Email o contraseña incorrectos');
+        return view('admin.index', compact('users', 'categories'));
     }
 
-    public function register(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function createUser()
+    {
+        return view('Admin.register');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeUser(Request $request)
     {
         //Validación de datos
         $request->validate([
@@ -74,25 +79,17 @@ class LoginController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
+            $user->role = (int) $request->role;
             $user->image = 'perfil.png';
             $user->save();
         }
-    
-        //Autentica al usuario y redirecciona a la página principal
-        Auth::login($user);
-        return redirect()->route('home')->with('message', 'Login exitoso');
+
+        return redirect()->route('admin')->with('message', 'Usuario creado correctamente');
     }
 
-    public function logout(Request $request)
+    public function edit(string $id)
     {
-        //Finaliza la sesión y redirecciona al login
-        Auth::logout();
-
-        //Invalida la sesión y genera un nuevo token de sesión para prevenir ataques de cookie theft
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        //Redirecciona al login con un mensaje de despedida
-        return redirect()->route('login')->with('message', 'Sesión finalizada');
+        $user = User::findOrFail($id);
+        return view('Profile.edit', compact('user'));
     }
 }

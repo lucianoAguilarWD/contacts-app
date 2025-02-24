@@ -1,1 +1,1 @@
-<main class="flex items-center justify-center h-screen bg-gray-100"> {{ $slot }} </main>
+<main class="flex items-center justify-center min-h-screen  bg-gray-100"> {{ $slot }} </main>
