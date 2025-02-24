@@ -1,7 +1,7 @@
 # Contacts-app - Aplicación web de contactos
 
 * Desarrollado por [Aguilar Luciano Ivan]
-* [2024]
+* [2025]
 
 ## Descripción
 
