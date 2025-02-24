@@ -17,7 +17,7 @@ El sistema proporciona una plataforma digital para facilitar la creación y visu
 ## Requisitos del Sistema
 
 -   Framework principal: Laravel 11
--   PHP 8.3.13
+-   PHP >= 8.2.12
 -   Mysql 8.3
 
 ## Requisitos del Servidor
