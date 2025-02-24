@@ -41,9 +41,9 @@ class ProfileController extends Controller
     {
         $request->validate([
             "name" => ['required', 'string', 'max:255'],
-            "image" => ['image'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             "url" => ['nullable', 'url'],
-            "phone" => ['nullable', 'string', 'max:11', 'regex:/^[0-9]+$/'],
+            'phone' => ['nullable', 'string', 'regex:/^\+?[0-9]{7,15}$/'],
         ]);
 
         $user = User::find($id);
